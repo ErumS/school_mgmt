@@ -3,43 +3,43 @@ require 'rails_helper'
 RSpec.describe Student, type: :model do
   context 'Validations' do
     context 'Success' do
-      it 'should be a valid student' do
+      it 'should be a valid student with manual entries' do
         FactoryGirl.build(:student, name: 'Inox', address: 'University', phone_no: '444444443', percentage: 55.90).should be_valid
       end
-      it 'should be a valid student' do
+      it 'should be a valid student with entries from FactoryGirl' do
         FactoryGirl.build(:student, phone_no: '5588745437895').should be_valid
       end
     end
 
     context 'Failure' do
-      it 'should not be a valid student' do
+      it 'should not be a valid student with invalid phone_no length less than 8' do
         FactoryGirl.build(:student, name: 'Inox', address: 'University', phone_no: '44434').should_not be_valid
       end
-      it 'should not be a valid student' do
+      it 'should not be a valid student with invalid phone_no length greater than 15' do
         FactoryGirl.build(:student, phone_no: '44434678783487387874755').should_not be_valid
       end
-      it 'should not be a valid student' do
+      it 'should not be a valid student with nil address' do
         FactoryGirl.build(:student, address: nil).should_not be_valid
       end
-      it 'should not be a valid student' do
+      it 'should not be a valid student with nil name' do
         FactoryGirl.build(:student, name: nil).should_not be_valid
       end
-      it 'should not be a valid student' do
+      it 'should not be a valid student with nil phone_no' do
         FactoryGirl.build(:student, phone_no: nil).should_not be_valid
       end
-      it 'should not be a valid student' do
+      it 'should not be a valid student with nil address and phone_no' do
         FactoryGirl.build(:student, address: nil, phone_no: nil).should_not be_valid
       end
-      it 'should not be a valid student' do
+      it 'should not be a valid student with nil name and address' do
         FactoryGirl.build(:student, name: nil, address: nil).should_not be_valid
       end
-      it 'should not be a valid student' do
+      it 'should not be a valid student with nil name and phone_no' do
         FactoryGirl.build(:student, name: nil, phone_no: nil).should_not be_valid
       end
-      it 'should not be a valid student' do
+      it 'should not be a valid student with nil name, address and phone_no' do
         FactoryGirl.build(:student, name: nil, address: nil, phone_no: nil).should_not be_valid
       end
-      it 'should not be a valid student' do
+      it 'should not be a valid student with invalid phone_no' do
         FactoryGirl.build(:student, phone_no: 454_545).should_not be_valid
       end
     end
@@ -94,19 +94,15 @@ RSpec.describe Student, type: :model do
         student2.classroom.id.should eq classroom2.id
         student2.classroom.id.should_not eq classroom1.id
       end
-      it 'should not have many subjects' do
+      it 'should not have subjects as single object of student' do
         student = FactoryGirl.create(:student, phone_no: '467574378')
-        subject1 = FactoryGirl.create(:subject)
-        subject2 = FactoryGirl.create(:subject)
-        student.subjects.should_not include subject1
-        student.subjects.should_not include subject2
+        expect { student.subjects }.to_not raise_exception
+        expect { student.subject }.to raise_exception
       end
-      it 'should not have many teachers' do
+      it 'should not have teachers as single object of student' do
         student = FactoryGirl.create(:student, phone_no: '467574378')
-        teacher1 = FactoryGirl.create(:teacher)
-        teacher2 = FactoryGirl.create(:teacher)
-        student.teachers.should_not include teacher1
-        student.teachers.should_not include teacher2
+        expect { student.teachers }.to_not raise_exception
+        expect { student.teacher }.to raise_exception
       end
     end
   end

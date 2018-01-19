@@ -51,7 +51,7 @@ class TeachersController < ApplicationController
     else
       respond_to do |format|
         format.json { render json: { error: @teacher.errors }, status: :unprocessable_entity }
-        format.html { render html: { message: @teacher.errors.messages }, status: :unprocessable_entity}
+        format.html { render html: { message: @teacher.errors.messages }, status: :unprocessable_entity }
       end
     end
   rescue StandardError => e
@@ -62,18 +62,16 @@ class TeachersController < ApplicationController
   end
 
   def destroy
-    begin
-      @teacher = Teacher.find(params[:id])
-      @teacher.destroy
-      respond_to do |format|
-        format.json { render json: { message: 'Successfully deleted' }, status: :ok }
-        format.html { redirect_to :back }
-      end
-    rescue StandardError => e
-      respond_to do |format|
-        format.json { render json: { error: e.message }, status: :not_found }
-        format.html { redirect_to @teacher }
-      end
+    @teacher = Teacher.find(params[:id])
+    @teacher.destroy
+    respond_to do |format|
+      format.json { render json: { message: 'Successfully deleted' }, status: :ok }
+      format.html { redirect_to :back }
+    end
+  rescue StandardError => e
+    respond_to do |format|
+      format.json { render json: { error: e.message }, status: :not_found }
+      format.html { redirect_to @teacher }
     end
   end
 

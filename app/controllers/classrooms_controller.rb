@@ -6,7 +6,7 @@ class ClassroomsController < ApplicationController
     respond_to do |format|
       format.json { render json: { classrooms: @classrooms }, status: :ok }
       format.html
-    end     
+    end
   end
 
   def show
@@ -62,18 +62,16 @@ class ClassroomsController < ApplicationController
   end
 
   def destroy
-    begin
-      @classroom = Classroom.find(params[:id])
-      @classroom.destroy
-      respond_to do |format|
-        format.json { render json: { message: 'Successfully deleted' }, status: :ok }
-        format.html { redirect_to :back }
-      end
-    rescue StandardError => e
-      respond_to do |format|
-        format.json { render json: { error: e.message }, status: :not_found }
-        format.html { redirect_to @classroom }
-      end
+    @classroom = Classroom.find(params[:id])
+    @classroom.destroy
+    respond_to do |format|
+      format.json { render json: { message: 'Successfully deleted' }, status: :ok }
+      format.html { redirect_to :back }
+    end
+  rescue StandardError => e
+    respond_to do |format|
+      format.json { render json: { error: e.message }, status: :not_found }
+      format.html { redirect_to @classroom }
     end
   end
 

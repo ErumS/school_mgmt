@@ -3,43 +3,43 @@ require 'rails_helper'
 RSpec.describe School, type: :model do
   context 'Validations' do
     context 'Success' do
-      it 'should be a valid school' do
+      it 'should be a valid school with manual entries' do
         FactoryGirl.build(:school, name: 'Inox', address: 'University', phone_no: '444444443').should be_valid
       end
-      it 'should be a valid school' do
+      it 'should be a valid school with entries from FactoryGirl' do
         FactoryGirl.build(:school, phone_no: '5588745437895').should be_valid
       end
     end
 
     context 'Failure' do
-      it 'should not be a valid school' do
+      it 'should not be a valid school with invalid phone_no of length less than 8' do
         FactoryGirl.build(:school, name: 'Inox', address: 'University', phone_no: '44434').should_not be_valid
       end
-      it 'should not be a valid school' do
+      it 'should not be a valid school with invalid phone_no of length greater than 15' do
         FactoryGirl.build(:school, phone_no: '44434678783487387874755').should_not be_valid
       end
-      it 'should not be a valid school' do
+      it 'should not be a valid school with nil address' do
         FactoryGirl.build(:school, address: nil).should_not be_valid
       end
-      it 'should not be a valid school' do
+      it 'should not be a valid school with nil name' do
         FactoryGirl.build(:school, name: nil).should_not be_valid
       end
-      it 'should not be a valid school' do
+      it 'should not be a valid school with nil phone_no' do
         FactoryGirl.build(:school, phone_no: nil).should_not be_valid
       end
-      it 'should not be a valid school' do
+      it 'should not be a valid school with nil address and phone_no' do
         FactoryGirl.build(:school, address: nil, phone_no: nil).should_not be_valid
       end
-      it 'should not be a valid school' do
+      it 'should not be a valid school with nil name and address' do
         FactoryGirl.build(:school, name: nil, address: nil).should_not be_valid
       end
-      it 'should not be a valid school' do
+      it 'should not be a valid school with nil name and phone_no' do
         FactoryGirl.build(:school, name: nil, phone_no: nil).should_not be_valid
       end
-      it 'should not be a valid school' do
+      it 'should not be a valid school with nil name, address and phone_no' do
         FactoryGirl.build(:school, name: nil, address: nil, phone_no: nil).should_not be_valid
       end
-      it 'should not be a valid school' do
+      it 'should not be a valid school with invalid phone_no' do
         FactoryGirl.build(:school, phone_no: 454_545).should_not be_valid
       end
     end
@@ -78,22 +78,22 @@ RSpec.describe School, type: :model do
     end
 
     context 'Failure' do
-      it 'should not have many classrooms' do
+      it 'should not have classrooms as single object of school' do
         school = FactoryGirl.create(:school, phone_no: '467574378')
         expect { school.classrooms }.to_not raise_exception
         expect { school.classroom }.to raise_exception
       end
-      it 'should not have many students' do
+      it 'should not have students as single object of school' do
         school = FactoryGirl.create(:school, phone_no: '467574378')
         expect { school.students }.to_not raise_exception
         expect { school.student }.to raise_exception
       end
-      it 'should not have many subjects' do
+      it 'should not have subjects as single object of school' do
         school = FactoryGirl.create(:school, phone_no: '467574378')
         expect { school.subjects }.to_not raise_exception
         expect { school.subject }.to raise_exception
       end
-      it 'should not have many teachers' do
+      it 'should not have teachers as single object of school' do
         school = FactoryGirl.create(:school, phone_no: '467574378')
         expect { school.teachers }.to_not raise_exception
         expect { school.teacher }.to raise_exception

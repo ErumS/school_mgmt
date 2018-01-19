@@ -3,31 +3,31 @@ require 'rails_helper'
 RSpec.describe Teacher, type: :model do
   context 'Validations' do
     context 'Success' do
-      it 'should be a valid teacher' do
-        FactoryGirl.build(:teacher, name: 'Inox', subject_name: 'Geography', salary: 30_000).should be_valid
+      it 'should be a valid teacher with manual entries' do
+        FactoryGirl.build(:teacher, name: 'Inox', subject_name: 'Geography', salary: 30000).should be_valid
       end
-      it 'should be a valid teacher' do
+      it 'should be a valid teacher with entries from FactoryGirl' do
         FactoryGirl.build(:teacher).should be_valid
       end
     end
 
     context 'Failure' do
-      it 'should not be a valid teacher' do
+      it 'should not be a valid teacher with invalid salary less than 10000' do
         FactoryGirl.build(:teacher, name: 'Inox', subject_name: 'Geography', salary: 300).should_not be_valid
       end
-      it 'should not be a valid teacher' do
+      it 'should not be a valid teacher with salary greater than 90000' do
         FactoryGirl.build(:teacher, salary: 456_788_888).should_not be_valid
       end
-      it 'should not be a valid teacher' do
+      it 'should not be a valid teacher with nil name' do
         FactoryGirl.build(:teacher, name: nil).should_not be_valid
       end
-      it 'should not be a valid teacher' do
+      it 'should not be a valid teacher with nil subject_name' do
         FactoryGirl.build(:teacher, subject_name: nil).should_not be_valid
       end
-      it 'should not be a valid teacher' do
+      it 'should not be a valid teacher with nil name and subject_name' do
         FactoryGirl.build(:teacher, name: nil, subject_name: nil).should_not be_valid
       end
-      it 'should not be a valid teacher' do
+      it 'should not be a valid teacher with invalid salary' do
         FactoryGirl.build(:teacher, salary: '455677889').should_not be_valid
       end
     end
@@ -90,12 +90,10 @@ RSpec.describe Teacher, type: :model do
         teacher2.subject.id.should eq subject2.id
         teacher2.subject.id.should_not eq subject1.id
       end
-      it 'should not have many students' do
+      it 'should not have students as single object of teacher' do
         teacher = FactoryGirl.create(:teacher)
-        student1 = FactoryGirl.create(:student)
-        student2 = FactoryGirl.create(:student)
-        teacher.students.should_not include student1
-        teacher.students.should_not include student2
+        expect { teacher.students }.to_not raise_exception
+        expect { teacher.student }.to raise_exception
       end
     end
   end

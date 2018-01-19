@@ -62,18 +62,16 @@ class SubjectsController < ApplicationController
   end
 
   def destroy
-    begin
-      @subject = Subject.find(params[:id])
-      @subject.destroy
-      respond_to do |format|
-        format.json { render json: { message: 'Successfully deleted' }, status: :ok }
-        format.html { redirect_to :back }
-      end
-    rescue StandardError => e
-      respond_to do |format|
-        format.json { render json: { error: e.message }, status: :not_found }
-        format.html { redirect_to @subject }
-      end
+    @subject = Subject.find(params[:id])
+    @subject.destroy
+    respond_to do |format|
+      format.json { render json: { message: 'Successfully deleted' }, status: :ok }
+      format.html { redirect_to :back }
+    end
+  rescue StandardError => e
+    respond_to do |format|
+      format.json { render json: { error: e.message }, status: :not_found }
+      format.html { redirect_to @subject }
     end
   end
 

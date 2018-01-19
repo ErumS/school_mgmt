@@ -4,8 +4,6 @@ RSpec.describe SchoolsController, type: :controller do
   context 'Success' do
     context 'GET index' do
       it 'should show all schools successfully' do
-        school1 = FactoryGirl.create(:school, phone_no: '545665332234')
-        school2 = FactoryGirl.create(:school, phone_no: '545665332234')
         get :index, format: 'json'
         response.should have_http_status(:ok)
       end
@@ -67,7 +65,8 @@ RSpec.describe SchoolsController, type: :controller do
     context 'GET show' do
       it 'should not show a valid school' do
         school = FactoryGirl.create(:school, phone_no: '44556677888')
-        get :show, id: 33_332, format: 'json'
+        a = School.last
+        get :show, id: a.id+1, format: 'json'
         response.should have_http_status(:not_found)
       end
     end
@@ -86,7 +85,8 @@ RSpec.describe SchoolsController, type: :controller do
     context 'PUT update' do
       it 'should not be a valid school updation with invalid id' do
         school = FactoryGirl.create(:school, phone_no: '44556677888')
-        put :update, id: 111, school: { name: 'abc', address: school.address, phone_no: school.phone_no }, format: 'json'
+        a = School.last
+        put :update, id: a.id+1, school: { name: 'abc', address: school.address, phone_no: school.phone_no }, format: 'json'
         response.should have_http_status(:not_found)
       end
       it 'should not be a valid school updation with invalid input' do
@@ -98,7 +98,8 @@ RSpec.describe SchoolsController, type: :controller do
     context 'DELETE destroy' do
       it 'should not be a valid school deletion with invalid id' do
         school = FactoryGirl.create(:school, phone_no: '44556677888')
-        delete :destroy, id: 123, format: 'json'
+        a = School.last
+        delete :destroy, id: a.id+1, format: 'json'
         response.should have_http_status(:not_found)
       end
     end

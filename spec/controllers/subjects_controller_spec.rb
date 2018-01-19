@@ -4,8 +4,6 @@ RSpec.describe SubjectsController, type: :controller do
   context 'Success' do
     context 'GET index' do
       it 'should show all subjects successfully' do
-        subject1 = FactoryGirl.create(:subject)
-        subject2 = FactoryGirl.create(:subject)
         get :index, format: 'json'
         response.should have_http_status(:ok)
       end
@@ -61,7 +59,8 @@ RSpec.describe SubjectsController, type: :controller do
     context 'GET show' do
       it 'should not show a valid subject' do
         subject = FactoryGirl.create(:subject)
-        get :show, id: 33, format: 'json'
+        a = Subject.last
+        get :show, id: a.id+1, format: 'json'
         response.should have_http_status(:not_found)
       end
     end
@@ -90,7 +89,8 @@ RSpec.describe SubjectsController, type: :controller do
     context 'PUT update' do
       it 'should not be a valid subject updation with invalid id' do
         subject = FactoryGirl.create(:subject)
-        put :update, id: 111, subject: { name: 'abc', subject_duration: subject.subject_duration }, format: 'json'
+        a = Subject.last
+        put :update, id: a.id+1, subject: { name: 'abc', subject_duration: subject.subject_duration }, format: 'json'
         response.should have_http_status(:not_found)
       end
       it 'should not be a valid subject updation with invalid input' do
@@ -100,14 +100,17 @@ RSpec.describe SubjectsController, type: :controller do
       end
       it 'should not be a valid subject updation with invalid school id' do
         subject = FactoryGirl.create(:subject)
-        put :update, id: subject.id, subject: { name: 'abc', school_id: 55_555 }, format: 'json'
+        school = FactoryGirl.create(:school, phone_no:"76473685828")
+        a = School.last
+        put :update, id: subject.id, subject: { name: 'abc', school_id: a.id+1 }, format: 'json'
         response.should have_http_status(:not_found)
       end
     end
     context 'DELETE destroy' do
       it 'should not be a valid subject deletion with invalid id' do
         subject = FactoryGirl.create(:subject)
-        delete :destroy, id: 123, format: 'json'
+        a = Subject.last
+        delete :destroy, id: a.id+1, format: 'json'
         response.should have_http_status(:not_found)
       end
     end

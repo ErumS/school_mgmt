@@ -4,8 +4,6 @@ RSpec.describe TeachersController, type: :controller do
   context 'Success' do
     context 'GET index' do
       it 'should show all teachers successfully' do
-        teacher1 = FactoryGirl.create(:teacher)
-        teacher2 = FactoryGirl.create(:teacher)
         get :index, format: 'json'
         response.should have_http_status(:ok)
       end
@@ -61,7 +59,8 @@ RSpec.describe TeachersController, type: :controller do
     context 'GET show' do
       it 'should not show a valid teacher' do
         teacher = FactoryGirl.create(:teacher)
-        get :show, id: 33, format: 'json'
+        a = Teacher.last
+        get :show, id: a.id+1, format: 'json'
         response.should have_http_status(:not_found)
       end
     end
@@ -90,7 +89,8 @@ RSpec.describe TeachersController, type: :controller do
     context 'PUT update' do
       it 'should not be a valid teacher updation with invalid id' do
         teacher = FactoryGirl.create(:teacher)
-        put :update, id: 111, teacher: { name: 'abc', subject_name: teacher.subject_name, salary: teacher.salary }, format: 'json'
+        a = Teacher.last
+        put :update, id: a.id+1, teacher: { name: 'abc', subject_name: teacher.subject_name, salary: teacher.salary }, format: 'json'
         response.should have_http_status(:not_found)
       end
       it 'should not be a valid teacher updation with invalid input' do
@@ -100,19 +100,24 @@ RSpec.describe TeachersController, type: :controller do
       end
       it 'should not be a valid teacher updation with invalid school id' do
         teacher = FactoryGirl.create(:teacher)
-        put :update, id: teacher.id, teacher: { name: 'abc', school_id: 55_555 }, format: 'json'
+        school = FactoryGirl.create(:school, phone_no:"6476578378")
+        a = School.last
+        put :update, id: teacher.id, teacher: { name: 'abc', school_id: a.id+1 }, format: 'json'
         response.should have_http_status(:not_found)
       end
       it 'should not be a valid teacher updation with invalid subject id' do
         teacher = FactoryGirl.create(:teacher)
-        put :update, id: teacher.id, teacher: { name: 'abc', subject_id: 55_555 }, format: 'json'
+        subject = FactoryGirl.create(:subject)
+        a = Subject.last
+        put :update, id: teacher.id, teacher: { name: 'abc', subject_id: a.id+1 }, format: 'json'
         response.should have_http_status(:not_found)
       end
     end
     context 'DELETE destroy' do
       it 'should not be a valid teacher deletion with invalid id' do
         teacher = FactoryGirl.create(:teacher)
-        delete :destroy, id: 123, format: 'json'
+        a = Teacher.last
+        delete :destroy, id: a.id+1, format: 'json'
         response.should have_http_status(:not_found)
       end
     end
